@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class City extends MainModel
 {
     protected $fillable=['name','active'];
+    
 
     public function regions()
     {

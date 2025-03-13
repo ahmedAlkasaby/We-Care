@@ -9,6 +9,8 @@ use App\Http\Traits\AttributeTrait;
 use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
 
 class CategoryController extends MainController
 {
@@ -17,9 +19,33 @@ class CategoryController extends MainController
     public function index()
     {
         $categories=Category::filter(request('search'))->paginate(50);
-
         return view("admin.category.index",compact('categories'));
     }
+
+    // public function index(Request $request){
+    //     if ($request->ajax()) {
+    //         $categories=Category::latest();
+
+    //         return DataTables::of($categories)
+    //             ->addIndexColumn()
+    //             ->addColumn('actions', function ($category) {
+    //                 return view('admin.category.includes.actions', compact('category'))->render();
+    //             })
+    //             ->addColumn('status', function ($category) {
+    //                 return view('admin.category.includes.status', compact('category'))->render();
+    //             })
+    //             ->editColumn('name', function ($category) {
+    //                 return $category->nameLang();
+    //             })
+    //             ->rawColumns(['actions', 'status'])
+    //             ->make(true);
+    //     }
+
+    //     return view("admin.category.index");
+    // }
+
+
+
 
 
 

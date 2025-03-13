@@ -37,4 +37,3 @@
 <script src={{ url("js/flashMessage.js")}}></script>
 
 @endsection
-

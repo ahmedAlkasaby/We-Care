@@ -1,34 +1,40 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\Dashboard\FaqController;
-use App\Http\Controllers\Dashboard\CaseController;
-use App\Http\Controllers\Dashboard\CityController;
-use App\Http\Controllers\Dashboard\ItemController;
-use App\Http\Controllers\Dashboard\PageController;
-use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\AdminController;
+
+use App\Http\Controllers\Dashboard\CaseController;
+use App\Http\Controllers\Dashboard\CategoryCaseController;
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CityController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DonationController;
 use App\Http\Controllers\Dashboard\DonerController;
+use App\Http\Controllers\Dashboard\FaqController;
 use App\Http\Controllers\Dashboard\ImpactController;
-use App\Http\Controllers\Dashboard\RegionController;
-use App\Http\Controllers\Dashboard\SliderController;
+use App\Http\Controllers\Dashboard\ItemController;
 use App\Http\Controllers\Dashboard\MessageController;
+use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\Dashboard\PageController;
 use App\Http\Controllers\Dashboard\PaymentController;
 use App\Http\Controllers\Dashboard\ProfileController;
-use App\Http\Controllers\Dashboard\SettingController;
-use App\Http\Controllers\Dashboard\StorageController;
-use App\Http\Controllers\Dashboard\CategoryController;
-use App\Http\Controllers\Dashboard\DonationController;
 use App\Http\Controllers\Dashboard\PurchaseController;
+use App\Http\Controllers\Dashboard\RegionController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\Dashboard\SliderController;
+use App\Http\Controllers\Dashboard\StorageController;
 use App\Http\Controllers\Dashboard\TransferController;
-use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\VolunteerController;
-use App\Http\Controllers\Dashboard\CategoryCaseController;
-use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\MainController;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Yajra\DataTables\Facades\DataTables;
+
+
 
 
 
@@ -88,9 +94,31 @@ Route::get('/change/theme',[MainController::class, 'theme'])->name('change.theme
 
 
 
+
+
 Route::group(['prefix'=>'dashboard','middleware' => ['auth','is_admin', 'setUserLocale','global_permission']], function(){
     Route::get('/clear-cache',[MainController::class,'clearCache'])->name('clear.cache');
+    Route::get('/data_table',function(Request $request){
+        if ($request->ajax()) {
+            $categories = Category::latest();
 
+            return DataTables::of($categories)
+                ->addIndexColumn() // إضافة ترقيم تلقائي
+                ->addColumn('actions', function ($category) {
+                    return view('admin.category.includes.actions', compact('category'))->render();
+                })
+                ->addColumn('status', function ($category) {
+                    return view('admin.category.includes.status', compact('category'))->render();
+                })
+                ->editColumn('name', function ($category) {
+                    return $category->nameLang();
+                })
+                ->rawColumns(['actions', 'status'])
+                ->make(true);
+        }
+
+        return view("data_table");
+    });
     Route::get('/',[DashboardController::class, 'index'])->name('admin');
     //roles
     Route::resource('roles',RoleController::class)->except('show');

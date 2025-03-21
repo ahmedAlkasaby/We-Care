@@ -128,6 +128,7 @@
 
       // عند تغيير أي Checkbox، تحقق من حالة الموديول ونوع الصلاحية والـ Select All
       function updateCheckboxStates() {
+
           $('.select-module').each(function() {
               var moduleRow = $(this).closest('tr');
               var allChecked = moduleRow.find('.form-check-input:not(.select-module)').length ===
@@ -137,10 +138,16 @@
 
           $('.select-type').each(function() {
               var type = $(this).data('type');
-              var allChecked = $('input[data-type="' + type + '"]').length ===
-                               $('input[data-type="' + type + '"]:checked').length;
+
+              var relatedCheckboxes = $('td input[data-type="' + type + '"]');
+
+              var allChecked = relatedCheckboxes.length > 0 && relatedCheckboxes.length === relatedCheckboxes.filter(':checked').length;
+
               $(this).prop('checked', allChecked);
+            //   $('thead input[data-type="' + type + '"]').closest('th').prop('checked', allChecked);
+
           });
+
 
           var allInputs = $('.form-check-input:not(.selectAll)');
           var allChecked = allInputs.length === allInputs.filter(':checked').length;
@@ -167,7 +174,8 @@
 
       // تحديث حالة checkboxes عند تغيير أي صلاحية مفردة
       $('table').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function() {
-          updateCheckboxStates();
+        console.log('change in table ')
+        updateCheckboxStates();
       });
 
       // استدعاء الدالة عند تحميل الصفحة لتحديث الحالات المبدئية

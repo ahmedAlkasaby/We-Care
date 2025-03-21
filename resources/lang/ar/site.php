@@ -835,6 +835,8 @@ return array (
     'store'   => 'إضافة',
     'update'  => 'تعديل',
     'destroy' => 'حذف',
+    'not_found'=>'لا يوجد',
+    'select_all'=>'تحديد الكل',
 
 
 

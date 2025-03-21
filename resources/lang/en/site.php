@@ -845,6 +845,8 @@ return array (
     'store'   => 'Create',
     'update'  => 'Edit',
     'destroy' => 'Delete',
+    "not_found" => 'Not Found',
+    'select_all' => 'Select All',
 
 
 

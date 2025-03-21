@@ -98,7 +98,7 @@
 @section('js')
 <script src={{ url("js/flashMessage.js")}}></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+{{-- <script>
   $(document).ready(function() {
     // تحديد جميع الصلاحيات
     $('.selectAll').on('change', function() {
@@ -120,10 +120,10 @@
   });
 
 
-</script>
+</script> --}}
 
 
-{{-- <script>
+<script>
     $(document).ready(function() {
 
       // عند تغيير أي Checkbox، تحقق من حالة الموديول ونوع الصلاحية والـ Select All
@@ -149,7 +149,7 @@
 
       // تحديد جميع الصلاحيات
       $('.selectAll').on('change', function() {
-          $('.form-check-input').prop('checked', $(this).prop('checked'));
+        $(this).closest('table').find('.form-check-input').prop('checked', $(this).prop('checked'));
       });
 
       // تحديد جميع الصلاحيات لنوع معين (مثل read, create, delete...)
@@ -166,14 +166,14 @@
       });
 
       // تحديث حالة checkboxes عند تغيير أي صلاحية مفردة
-      $('tbody').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function() {
+      $('table').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function() {
           updateCheckboxStates();
       });
 
       // استدعاء الدالة عند تحميل الصفحة لتحديث الحالات المبدئية
       updateCheckboxStates();
     });
-</script> --}}
+</script>
 
 {{-- <script>
     $(document).ready(function () {

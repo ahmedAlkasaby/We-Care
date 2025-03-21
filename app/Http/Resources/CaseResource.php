@@ -47,7 +47,7 @@ class CaseResource extends JsonResource
             'repeating'=>$this->repeating,
             'next_donation_date'=>Carbon::parse($this->next_donation_date)->format('d/m/Y'),
             'date_start'=>Carbon::parse($this->date_start)->format('d/m/Y'),
-            'date_end'=>Carbon::parse($this->date_end)->format('d/m/Y'),
+            'date_end' => $this->date_end ? Carbon::parse($this->date_end)->format('d/m/Y') : null,
             'remaining_days_until_end' => $this->remainingDaysUntilEnd(),
             'price'=>(string)$this->get_price(),
             'price_raised'=>(string)$this->get_price_raised(),

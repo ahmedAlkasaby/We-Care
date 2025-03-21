@@ -97,5 +97,194 @@
 @endsection
 @section('js')
 <script src={{ url("js/flashMessage.js")}}></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // تحديد جميع الصلاحيات
+    $('.selectAll').on('change', function() {
+        $(this).closest('table').find('.form-check-input').prop('checked', $(this).prop('checked'));
+    });
+
+
+    // تحديد جميع الصلاحيات لنوع معين (مثل read, create, delete...)
+
+    $('.select-type').on('change', function() {
+        let type = $(this).data('type');
+        $(this).closest('table').find('input[data-type="' + type + '"]').prop('checked', $(this).prop('checked'));
+    });
+
+    // تحديد جميع الصلاحيات الخاصة بموديول معين
+    $('.select-module').on('change', function() {
+        $(this).closest('tr').find('.form-check-input').prop('checked', $(this).prop('checked'));
+    });
+  });
+
+
+</script>
+
+
+{{-- <script>
+    $(document).ready(function() {
+
+      // عند تغيير أي Checkbox، تحقق من حالة الموديول ونوع الصلاحية والـ Select All
+      function updateCheckboxStates() {
+          $('.select-module').each(function() {
+              var moduleRow = $(this).closest('tr');
+              var allChecked = moduleRow.find('.form-check-input:not(.select-module)').length ===
+                               moduleRow.find('.form-check-input:not(.select-module):checked').length;
+              $(this).prop('checked', allChecked);
+          });
+
+          $('.select-type').each(function() {
+              var type = $(this).data('type');
+              var allChecked = $('input[data-type="' + type + '"]').length ===
+                               $('input[data-type="' + type + '"]:checked').length;
+              $(this).prop('checked', allChecked);
+          });
+
+          var allInputs = $('.form-check-input:not(.selectAll)');
+          var allChecked = allInputs.length === allInputs.filter(':checked').length;
+          $('.selectAll').prop('checked', allChecked);
+      }
+
+      // تحديد جميع الصلاحيات
+      $('.selectAll').on('change', function() {
+          $('.form-check-input').prop('checked', $(this).prop('checked'));
+      });
+
+      // تحديد جميع الصلاحيات لنوع معين (مثل read, create, delete...)
+      $('.select-type').on('change', function() {
+          let type = $(this).data('type');
+          $('input[data-type="' + type + '"]').prop('checked', $(this).prop('checked'));
+          updateCheckboxStates();
+      });
+
+      // تحديد جميع الصلاحيات الخاصة بموديول معين
+      $('.select-module').on('change', function() {
+          $(this).closest('tr').find('.form-check-input:not(.select-module)').prop('checked', $(this).prop('checked'));
+          updateCheckboxStates();
+      });
+
+      // تحديث حالة checkboxes عند تغيير أي صلاحية مفردة
+      $('tbody').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function() {
+          updateCheckboxStates();
+      });
+
+      // استدعاء الدالة عند تحميل الصفحة لتحديث الحالات المبدئية
+      updateCheckboxStates();
+    });
+</script> --}}
+
+{{-- <script>
+    $(document).ready(function () {
+
+        // تحديث حالة الـ checkboxes بناءً على الاختيارات
+        function updateCheckboxStates() {
+            $('.select-module').each(function () {
+                var moduleRow = $(this).closest('tr');
+                var allChecked = moduleRow.find('.form-check-input:not(.select-module)').length ===
+                    moduleRow.find('.form-check-input:not(.select-module):checked').length;
+                $(this).prop('checked', allChecked);
+            });
+
+            $('.select-type').each(function () {
+                var type = $(this).data('type');
+                var allInputs = $('input[data-type="' + type + '"]');
+                var allChecked = allInputs.length === allInputs.filter(':checked').length;
+                $(this).prop('checked', allChecked);
+            });
+
+            var allInputs = $('.form-check-input:not(.selectAll)');
+            var allChecked = allInputs.length === allInputs.filter(':checked').length;
+            $('.selectAll').prop('checked', allChecked);
+        }
+
+        // عند الضغط على "تحديد الكل"
+        $('.selectAll').on('change', function () {
+            $('.form-check-input').prop('checked', $(this).prop('checked'));
+        });
+
+        // عند الضغط على "تحديد جميع الصلاحيات لنوع معين" مثل Read, Create...
+        $('.select-type').on('change', function () {
+            let type = $(this).data('type');
+            $('input[data-type="' + type + '"]').prop('checked', $(this).prop('checked'));
+            updateCheckboxStates();
+        });
+
+        // عند الضغط على "تحديد جميع الصلاحيات الخاصة بموديول معين"
+        $('.select-module').on('change', function () {
+            $(this).closest('tr').find('.form-check-input:not(.select-module)').prop('checked', $(this).prop('checked'));
+            updateCheckboxStates();
+        });
+
+        // عند تغيير أي صلاحية مفردة
+        $('table').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function () {
+            updateCheckboxStates();
+        });
+
+        // استدعاء الدالة عند تحميل الصفحة
+        updateCheckboxStates();
+    });
+</script> --}}
+{{-- <script>
+    $(document).ready(function () {
+        // تحديث حالة الـ checkboxes بناءً على الاختيارات
+        function updateCheckboxStates() {
+            // تحديث حالة كل موديول (Row)
+            $('.select-module').each(function () {
+                var moduleRow = $(this).closest('tr');
+                var allChecked = moduleRow.find('.form-check-input:not(.select-module)').length ===
+                    moduleRow.find('.form-check-input:not(.select-module):checked').length;
+                $(this).prop('checked', allChecked);
+            });
+
+            // تحديث حالة كل نوع (Read, Create, Delete, ...)
+            $('.select-type').each(function () {
+                var type = $(this).data('type');
+                var allInputs = $('input[data-type="' + type + '"]');
+
+                // التأكد من أن جميع الصلاحيات المحددة لهذا النوع مفعلّة
+                var allChecked = allInputs.length > 0 && allInputs.length === allInputs.filter(':checked').length;
+                $(this).prop('checked', allChecked);
+            });
+
+            // تحديث حالة "تحديد الكل"
+            var allInputs = $('.form-check-input:not(.selectAll)');
+            var allChecked = allInputs.length === allInputs.filter(':checked').length;
+            $('.selectAll').prop('checked', allChecked);
+        }
+
+        // عند الضغط على "تحديد الكل"
+        $('.selectAll').on('change', function () {
+            $('.form-check-input').prop('checked', $(this).prop('checked'));
+            updateCheckboxStates();
+        });
+
+        // عند الضغط على "تحديد جميع الصلاحيات لنوع معين" مثل Read, Create...
+        $('.select-type').on('change', function () {
+            let type = $(this).data('type');
+
+            // تحديد جميع الـ checkboxes الخاصة بهذا النوع
+            $('input[data-type="' + type + '"]').prop('checked', $(this).prop('checked'));
+
+            updateCheckboxStates();
+        });
+
+        // عند الضغط على "تحديد جميع الصلاحيات الخاصة بموديول معين"
+        $('.select-module').on('change', function () {
+            $(this).closest('tr').find('.form-check-input:not(.select-module)').prop('checked', $(this).prop('checked'));
+            updateCheckboxStates();
+        });
+
+        // عند تغيير أي صلاحية مفردة
+        $('table').on('change', '.form-check-input:not(.select-module, .select-type, .selectAll)', function () {
+            updateCheckboxStates();
+        });
+
+        // استدعاء الدالة عند تحميل الصفحة
+        updateCheckboxStates();
+    });
+
+</script> --}}
 
 @endsection

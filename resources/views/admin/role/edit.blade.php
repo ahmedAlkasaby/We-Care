@@ -15,56 +15,8 @@
                         <input type="text" name="name" class="form-control" tabindex="-1" value="{{ $role->name }}"
                             required />
                     </div>
-                    {{-- <div class="col-12">
-                        <h5>@lang('site.permissions')</h5>
-                        <!-- Permission table -->
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th class="text-center">@lang('site.module')</th>
-                                        <th class="text-center">@lang('site.permissions')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $groupedPermissions = collect($permissions)->groupBy('description');
-                                    @endphp
-                                        @dd($groupedPermissions)
 
-                                    @foreach ($groupedPermissions as $module => $modulePermissions)
-                                        <tr>
-                                            <td class="fw-bold text-center bg-light">{{ ucfirst($module) }}</td>
-                                            <td>
-                                                <div class="d-flex flex-wrap gap-3">
-                                                    @foreach ($modulePermissions as $permission)
-                                                        @php
-                                                            $permissionValue = $permission->name;
-                                                        @endphp
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                id="perm_{{ $permissionValue }}"
-                                                                value="{{ $permissionValue }}"
-                                                                name="permissions[]"
-                                                                {{ in_array($permissionValue, old('permissions', $permissionsInDb)) ? 'checked' : '' }} />
-                                                            <label class="form-check-label" for="perm_{{ $permissionValue }}">
-                                                                <span class="badge bg-primary text-white">
-                                                                    @lang('site.' . explode('.', $permissionValue)[1])
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <!-- Permission table -->
-                    </div> --}}
-                    @include('admin.role.includes.formPermission')
+                    @include('admin.role.includes.updatePermission')
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary me-sm-3 me-1">@lang('site.edit')</button>
                         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">

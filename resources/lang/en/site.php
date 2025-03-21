@@ -841,7 +841,7 @@ return array (
     'the_case_already_in_likes'=>'The Case Already In Likes',
     'index'   => 'Read',
     'show'    => 'Show',
-    'toggle'  => 'Enable',
+    'toggle'  => 'Toggle',
     'store'   => 'Create',
     'update'  => 'Edit',
     'destroy' => 'Delete',

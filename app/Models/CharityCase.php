@@ -103,9 +103,9 @@ class CharityCase extends MainModel
         if ($this->repeating === 'none' && $this->archive==1 && $this->get_price_raised() >= $this->get_price()) {
             return __('site.finish');
         }elseif ($this->get_price_raised() < $this->get_price() && $this->date_end && $this->date_end < now()) {
-            $this->active=0;
-            $this->archive=1;
-            $this->save();
+            $this->withoutEvents(function () {
+                $this->update(['active' => 0, 'archive' => 1]);
+            });
             return __('site.expire');
         }elseif($this->archive==1) {
             return __('site.archive');
@@ -142,7 +142,9 @@ class CharityCase extends MainModel
                 return $item->pivot->amount * $item->price;
             });
 
-            $this->update(['price'=>$totalPrice]);
+            $this->withoutEvents(function () use ($totalPrice) {
+                $this->update(['price' => $totalPrice]);
+            });
             return $this->attributes['price'];
 
         }
@@ -157,7 +159,10 @@ class CharityCase extends MainModel
                 return $item->price * $item->pivot->amount_raised ;
             });
 
-            $this->update(['price_raised'=>$price_raised]);
+            $this->withoutEvents(function () use ($price_raised) {
+                $this->update(['price_raised' => $price_raised]);
+            });
+
 
             return $this->attributes['price_raised'];
 
@@ -173,7 +178,9 @@ class CharityCase extends MainModel
                 return $item->pivot->amount * $item->price;
             });
 
-            $this->update(['price'=>$totalPrice]);
+            $this->withoutEvents(function () use ($totalPrice) {
+                $this->update(['price' => $totalPrice]);
+            });
             return $this->attributes['price'];
 
         }
@@ -189,7 +196,9 @@ class CharityCase extends MainModel
                 return $item->price * $item->pivot->amount_raised ;
             });
 
-            $this->update(['price_raised'=>$price_raised]);
+            $this->withoutEvents(function () use ($price_raised) {
+                $this->update(['price_raised' => $price_raised]);
+            });
 
             return $this->attributes['price_raised'];
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('name');
             $table->text('description')->nullable();
             $table->morphs('model');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->json('properties')->nullable(); // تخزين البيانات القديمة والجديدة
             $table->string('action');
             $table->timestamps();

@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\DonerController;
 use App\Http\Controllers\Dashboard\FaqController;
 use App\Http\Controllers\Dashboard\ImpactController;
 use App\Http\Controllers\Dashboard\ItemController;
+use App\Http\Controllers\Dashboard\LogController;
 use App\Http\Controllers\Dashboard\MessageController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\PageController;
@@ -98,27 +99,7 @@ Route::get('/change/theme',[MainController::class, 'theme'])->name('change.theme
 
 Route::group(['prefix'=>'dashboard','middleware' => ['auth','is_admin', 'setUserLocale','global_permission']], function(){
     Route::get('/clear-cache',[MainController::class,'clearCache'])->name('clear.cache');
-    Route::get('/data_table',function(Request $request){
-        if ($request->ajax()) {
-            $categories = Category::latest();
 
-            return DataTables::of($categories)
-                ->addIndexColumn() // إضافة ترقيم تلقائي
-                ->addColumn('actions', function ($category) {
-                    return view('admin.category.includes.actions', compact('category'))->render();
-                })
-                ->addColumn('status', function ($category) {
-                    return view('admin.category.includes.status', compact('category'))->render();
-                })
-                ->editColumn('name', function ($category) {
-                    return $category->nameLang();
-                })
-                ->rawColumns(['actions', 'status'])
-                ->make(true);
-        }
-
-        return view("data_table");
-    });
     Route::get('/',[DashboardController::class, 'index'])->name('admin');
     //roles
     Route::resource('roles',RoleController::class)->except('show');
@@ -207,6 +188,9 @@ Route::group(['prefix'=>'dashboard','middleware' => ['auth','is_admin', 'setUser
     // notifications
     Route::resource("notifications",NotificationController::class)->except("show");
     Route::put("notifications/{notification}/makeAsRead",[NotificationController::class,'makeAsRead'])->name('notifications.markAsRead');
+
+    // logs
+    Route::get('logs',[LogController::class,'index'])->name('logs.index');
 
 
 });

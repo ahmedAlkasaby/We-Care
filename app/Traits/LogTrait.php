@@ -27,7 +27,7 @@ trait LogTrait{
             'description' => __("site.activity_log", [
                 'action' => __("site.$action"),
                 'model' => class_basename($this),
-                'user' => auth()->user()->name
+                'user' => auth()->user()->name ?? 'app'
             ]),
             'model_id' => $this->id,
             'model_type' => get_class($this),

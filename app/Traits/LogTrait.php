@@ -29,8 +29,8 @@ trait LogTrait{
                 'model' => class_basename($this),
                 'user' => auth()->user()->name
             ]),
-            'subject_id' => $this->id,
-            'subject_type' => get_class($this),
+            'model_id' => $this->id,
+            'model_type' => get_class($this),
             'user_id' => auth()->id() ?? null,
             'action' => $action,
             'properties' => $action === 'updated' ? [

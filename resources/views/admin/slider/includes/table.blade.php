@@ -25,11 +25,17 @@
 
                 {{-- status --}}
                 <td class="text-center">
+                    @if(  ! auth()->user()->hasPermission('sliders.toggle'))
+                    <button disabled type="button" class="btn {{ $slider->active ? 'btn-success' : 'btn-danger' }} toggle-slider waves-effect waves-light" data-slider-id="{{ $slider->id }}" {{ Route::is('sliders.deleted') ? 'disabled' : '' }}>
+                        <i class="fa-solid {{ $slider->active ? 'fa-check' : 'fa-circle-xmark' }}"></i>
+                    </button>                    @else
                     <a href="{{ route('sliders.toggle', ['slider' => $slider->id]) }}">
                         <button  type="button" class="btn {{ $slider->active ? 'btn-success' : 'btn-danger' }} toggle-slider waves-effect waves-light" data-slider-id="{{ $slider->id }}" {{ Route::is('sliders.deleted') ? 'disabled' : '' }}>
                             <i class="fa-solid {{ $slider->active ? 'fa-check' : 'fa-circle-xmark' }}"></i>
                         </button>
                     </a>
+                    @endif
+
                 </td>
 
                 {{-- Actions --}}

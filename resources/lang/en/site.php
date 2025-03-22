@@ -848,6 +848,12 @@ return array (
     "not_found" => 'Not Found',
     'select_all' => 'Select All',
 
+    'created' => 'created',
+    'updated' => 'updated',
+    'deleted' => 'deleted',
+
+    'activity_log' => ":action in :model by :user"
+
 
 
 

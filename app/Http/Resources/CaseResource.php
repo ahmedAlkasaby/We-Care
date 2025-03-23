@@ -49,10 +49,10 @@ class CaseResource extends JsonResource
             'date_start'=>Carbon::parse($this->date_start)->format('d/m/Y'),
             'date_end' => $this->date_end ? Carbon::parse($this->date_end)->format('d/m/Y') : null,
             'remaining_days_until_end' => $this->remainingDaysUntilEnd(),
-            'price'=>(string)$this->get_price(),
-            'price_raised'=>(string)$this->get_price_raised(),
+            'price'=>(string)$this->price,
+            'price_raised'=>(string)$this->price_raised,
             'waiting_price'=> (string)$this->donations->where('confirm', 0)->sum(function($donation) {
-                return $donation->get_price();
+                return $donation->price;
             }),
             'donators'=>(string)Donation::where('case_id',$this->id)->count(),
             'volunteer'=>new VolunteerResource($this->volunteer),

@@ -24,7 +24,7 @@ trait DonationTrait{
         ]);
         $doner=User::find($doner_id);
         $doner->update([
-            'amount'=>$doner->amount + $donation->get_price()
+            'amount'=>$doner->amount + $donation->price
         ]);
         $donation->images()->create([
             'image'=>'donation_images\donation_from_charity.png'
@@ -60,7 +60,7 @@ trait DonationTrait{
         $donation=Donation::find($donation_id);
         $doner=User::find($donation->doner_id);
         $doner->update([
-            'amount'=> $doner->amount + $donation->get_price()
+            'amount'=> $doner->amount + $donation->price
         ]);
 
     }
@@ -90,11 +90,11 @@ trait DonationTrait{
         }else{
             $storage=Storage::find(1);
             $storage->update([
-                'price'=>$storage->price + $donation->get_price()
+                'price'=>$storage->price + $donation->price
             ]);
             $doner=User::find($donation->doner_id);
             $doner->update([
-                'amount'=>$doner->amount + $donation->get_price()
+                'amount'=>$doner->amount + $donation->price
             ]);
         }
 

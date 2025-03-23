@@ -105,7 +105,7 @@ trait TransferTrait{
             'price'=>$storage->price - $price
         ]);
         $case->update([
-            'price_raised'=>$case->get_price_raised() + $price
+            'price_raised'=>$case->price_raised + $price
         ]);
     }
     public function transferByPriceByDonation($case_id,$price,$transfer_id,$donation_id){
@@ -121,7 +121,7 @@ trait TransferTrait{
             'price'=>$storage->price - $price
         ]);
         $case->update([
-            'price_raised'=>$case->get_price_raised() + $price
+            'price_raised'=>$case->price_raised + $price
         ]);
 
         $donation->update([
@@ -172,19 +172,19 @@ trait TransferTrait{
         $storage=Storage::find(1);
 
         $storage->update([
-            'price'=>$storage->price+ $transfer->get_price()
+            'price'=>$storage->price+ $transfer->price
         ]);
         // case
         $case=CharityCase::find($transfer->case_id);
         $case->update([
-            'price_raised'=>$case->get_price_raised() - $transfer->get_price(),
+            'price_raised'=>$case->price_raised - $transfer->price,
             'active'=>1
         ]);
         if($donation_id){
             // donation
             $donation=Donation::find($transfer->donation_id);
             $donation->update([
-                'doner_price'=>$donation->get_doner_price() - $transfer->get_price()
+                'doner_price'=>$donation->get_doner_price() - $transfer->price
             ]);
         }
         $transfer->items()->detach();
@@ -196,7 +196,7 @@ trait TransferTrait{
         $caseUpdated=CharityCase::find($case_id);
 
         if ($caseUpdated->repeating != 'none') {
-            if ($caseUpdated->get_price_raised() >= $caseUpdated->get_price() ) {
+            if ($caseUpdated->price_raised >= $caseUpdated->price ) {
                 $caseUpdated->update([
                     'next_donation_date'=>$this->calculateNextDonationDateWithTransfer($caseUpdated->repeating,$caseUpdated->next_donation_date),
                     'price_raised'=>0,
@@ -204,7 +204,7 @@ trait TransferTrait{
                 ]);
             }
         }else {
-            if($caseUpdated->get_price_raised()  >= $caseUpdated->get_price() ){
+            if($caseUpdated->price_raised  >= $caseUpdated->price ){
                 $caseUpdated->update([
                     'active'=>0,
                     'archive'=>1

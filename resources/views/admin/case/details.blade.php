@@ -43,13 +43,13 @@
             <!-- Price -->
             <div class="col-md-6">
                 <label class="form-label fw-bold">@lang("site.price")</label>
-                <p class="text-muted">{{$case->get_price() ?? __("site.null")}}</p>
+                <p class="text-muted">{{$case->price ?? __("site.null")}}</p>
             </div>
 
             <!-- Price Raised -->
             <div class="col-md-6">
                 <label class="form-label fw-bold">@lang("site.price_raised")</label>
-                <p class="text-muted">{{$case->get_price_raised() ?? __("site.null")}}</p>
+                <p class="text-muted">{{$case->price_raised ?? __("site.null")}}</p>
             </div>
 
             <!-- Date Start -->
@@ -63,8 +63,8 @@
                 <label class="form-label fw-bold">@lang("site.date_end")</label>
                 <p class="text-muted">{{$case->date_end ?? __("site.null")}}</p>
             </div>
-             <!-- address -->
-             <div class="col-6">
+            <!-- address -->
+            <div class="col-6">
                 <label class="form-label fw-bold">@lang("site.address")</label>
                 <dl class="row">
                     <dt class="col-sm-3">@lang('site.city'):</dt>
@@ -115,5 +115,3 @@
         </div>
     </div>
 </div>
-
-

@@ -15,8 +15,8 @@
                     @if ($donation->case->items->count()>0)
                     <h3>@lang('site.donation_price') = </h3>
                     <h2 class="donation-price"
-                        data-initial-donation="{{ $donation->get_price() - $donation->get_doner_price() }}">
-                        {{ $donation->get_price() - $donation->get_doner_price() }}</h2>
+                        data-initial-donation="{{ $donation->price - $donation->get_doner_price() }}">
+                        {{ $donation->price - $donation->get_doner_price() }}</h2>
                     <h5>@lang('site.items')</h5>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-borderless">
@@ -75,8 +75,8 @@
 
                     <h5>@lang('site.price')</h5>
                     <h2 class="donation-money"
-                        data-initial-donation="{{ $donation->get_price()-$donation->get_doner_price() }}">{{
-                        $donation->get_price()-$donation->get_doner_price() }}</h2>
+                        data-initial-donation="{{ $donation->price-$donation->get_doner_price() }}">{{
+                        $donation->price-$donation->get_doner_price() }}</h2>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-borderless">
                             <thead>

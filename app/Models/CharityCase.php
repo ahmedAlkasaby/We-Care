@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class CharityCase extends MainModel
 {
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function ($case) {
+            if ($case->type == 'items') {
+                $newPrice = $case->items->sum(fn($item) => $item->pivot->amount * $item->price);
+                $newPriceRaised = $case->items->sum(fn($item) => $item->price * $item->pivot->amount_raised);
+
+                // تحديث القيم فقط إذا كانت مختلفة عن المخزنة
+                if ($case->price != $newPrice || $case->price_raised != $newPriceRaised) {
+                    $case->updateQuietly([
+                        'price' => $newPrice,
+                        'price_raised' => $newPriceRaised,
+                    ]);
+                }
+            }
+        });
+    }
+
 
     protected $fillable=[
         'volunteer_id',
@@ -70,7 +90,7 @@ class CharityCase extends MainModel
 
     public function is_archive()
     {
-        if ($this->get_price_raised() >= $this->get_price()  || $this->archive == 1) {
+        if ($this->price_raised >= $this->price  || $this->archive == 1) {
             return true;
         }
         return false;
@@ -100,9 +120,9 @@ class CharityCase extends MainModel
     }
 
     public function check_status(){
-        if ($this->repeating === 'none' && $this->archive==1 && $this->get_price_raised() >= $this->get_price()) {
+        if ($this->repeating === 'none' && $this->archive==1 && $this->price_raised >= $this->price) {
             return __('site.finish');
-        }elseif ($this->get_price_raised() < $this->get_price() && $this->date_end && $this->date_end < now()) {
+        }elseif ($this->price_raised < $this->price && $this->date_end && $this->date_end < now()) {
             $this->withoutEvents(function () {
                 $this->update(['active' => 0, 'archive' => 1]);
             });
@@ -134,84 +154,7 @@ class CharityCase extends MainModel
         }
     }
 
-    public function getPriceAttribute(){
-        if ($this->type=='price') {
-            return $this->attributes['price'];
-        }else{
-            $totalPrice = $this->items->sum(function($item) {
-                return $item->pivot->amount * $item->price;
-            });
-
-            $this->withoutEvents(function () use ($totalPrice) {
-                $this->update(['price' => $totalPrice]);
-            });
-            return $this->attributes['price'];
-
-        }
-    }
-
-    public function getPriceRaisedAttribute(){
-        if ($this->type=='price') {
-            return $this->attributes['price_raised'];
-
-        }else{
-            $price_raised=$this->items->sum(function($item){
-                return $item->price * $item->pivot->amount_raised ;
-            });
-
-            $this->withoutEvents(function () use ($price_raised) {
-                $this->update(['price_raised' => $price_raised]);
-            });
-
-
-            return $this->attributes['price_raised'];
-
-        }
-    }
-
-    public function get_price()
-    {
-        if ($this->type=='price') {
-            return $this->attributes['price'];
-        }else{
-            $totalPrice = $this->items->sum(function($item) {
-                return $item->pivot->amount * $item->price;
-            });
-
-            $this->withoutEvents(function () use ($totalPrice) {
-                $this->update(['price' => $totalPrice]);
-            });
-            return $this->attributes['price'];
-
-        }
-    }
-
-    public function get_price_raised()
-    {
-        if ($this->type=='price') {
-            return $this->attributes['price_raised'];
-
-        }else{
-            $price_raised=$this->items->sum(function($item){
-                return $item->price * $item->pivot->amount_raised ;
-            });
-
-            $this->withoutEvents(function () use ($price_raised) {
-                $this->update(['price_raised' => $price_raised]);
-            });
-
-            return $this->attributes['price_raised'];
-
-        }
-    }
-
-
-
-
-
-
-
-
+  
     public function scopeApiFilter($query, $filters) {
         $query->where('active', 1)
               ->where('archive', 0)

@@ -1,5 +1,5 @@
- <!--/ User Pills -->
- <div class="row text-nowrap  row-cols-1 row-cols-md-2">
+<!--/ User Pills -->
+<div class="row text-nowrap  row-cols-1 row-cols-md-2">
     <div class="col mb-3">
         <div class="card h-100">
             <div class="card-body">
@@ -96,7 +96,7 @@
                 <div class="card-info">
                     <h5 class="card-title mb-2">@lang("site.price")</h5>
                     <div class="d-flex align-items-baseline gap-1">
-                        <h5 class="text-warning mb-0">{{$case->get_price()}}</h5>
+                        <h5 class="text-warning mb-0">{{$case->price}}</h5>
                         <p class="mb-0">@lang("site.item that he need")</p>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                 <div class="card-info">
                     <h5 class="card-title mb-2">@lang("site.price_raised")</h5>
                     <div class="d-flex align-items-baseline gap-1">
-                        <h5 class="text-warning mb-0">{{$case->get_price_raised()}}</h5>
+                        <h5 class="text-warning mb-0">{{$case->price_raised}}</h5>
                         <p class="mb-0">@lang("site.price_raised")</p>
                     </div>
                 </div>

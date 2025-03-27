@@ -53,6 +53,95 @@ class CharityCase extends MainModel
     ];
 
 
+
+    public function getCustomLogProperties()
+    {
+        $original = $this->getOriginal();
+        $changes = $this->getChanges();
+
+        // $itemChanges = $this->trackItemChanges();
+
+        $original = $this->formatLogData($original);
+        $changes = $this->formatLogData($changes);
+
+        return [
+            'old' => $original,
+            'new' => $changes,
+            'items' => $itemChanges ?? null
+        ];
+    }
+
+
+    protected function formatLogData($data)
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        if (isset($data['user_id'])) {
+            $data['user_id'] = optional(User::find($data['user_id']))->name ?? 'N/A';
+        }
+
+        if (isset($data['volunteer_id'])) {
+            $data['volunteer_id'] = optional(User::find($data['volunteer_id']))->name ?? 'N/A';
+        }
+
+        if (isset($data['category_case_id'])) {
+            $data['category_case_id'] = optional(CategoryCase::find($data['category_case_id']))->name ?? 'N/A';
+        }
+
+        return $data;
+    }
+
+
+    protected function trackItemChanges()
+    {
+        $oldItems = $this->items()->withTrashed()->get()->keyBy('id')->toArray();
+        $newItems = $this->items()->get()->keyBy('id')->toArray();
+
+        $changes = [];
+
+        // مقارنة العناصر القديمة بالجديدة
+        foreach ($oldItems as $id => $oldItem) {
+            if (!isset($newItems[$id])) {
+                $changes['deleted'][] = [
+                    'item' => $oldItem['name'],
+                    'quantity' => $oldItem['quantity'],
+                    'price' => $oldItem['price'],
+                ];
+            } elseif ($oldItem != $newItems[$id]) {
+                $changes['updated'][] = [
+                    'item' => $oldItem['name'],
+                    'old' => [
+                        'quantity' => $oldItem['quantity'],
+                        'price' => $oldItem['price'],
+                    ],
+                    'new' => [
+                        'quantity' => $newItems[$id]['quantity'],
+                        'price' => $newItems[$id]['price'],
+                    ],
+                ];
+            }
+        }
+
+        // العناصر المضافة حديثًا
+        foreach ($newItems as $id => $newItem) {
+            if (!isset($oldItems[$id])) {
+                $changes['added'][] = [
+                    'item' => $newItem['name'],
+                    'quantity' => $newItem['quantity'],
+                    'price' => $newItem['price'],
+                ];
+            }
+        }
+
+        return $changes;
+    }
+
+
+
+
+
     public function details()
     {
         return $this->hasOne(CaseDetail::class,'case_id','id');
@@ -154,7 +243,7 @@ class CharityCase extends MainModel
         }
     }
 
-  
+
     public function scopeApiFilter($query, $filters) {
         $query->where('active', 1)
               ->where('archive', 0)

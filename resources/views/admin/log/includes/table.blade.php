@@ -14,6 +14,7 @@
                 <tr class="{{ $loop->iteration % 2 == 0 ? 'even' : 'odd' }}">
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $log->user?->name ?? '—' }}</td>
+
                     <td>{{ $log->description }}</td>
                     <td>{{ $log->created_at }}</td>
                     <td class="text-lg-center">
@@ -35,6 +36,18 @@
                                         <i class="ti ti-trash me-1"></i> @lang('site.delete')
                                     </button>
                                 @endif
+                                {{-- @if (auth()->user()->hasPermission($log->name'.show'))
+                                <a href="{{ route($log->name'.show') }}">
+
+                                </a>
+                                    <button class="dropdown-item">
+                                        <i class="ti ti-trash me-1"></i> @lang('site.show')
+                                    </button>
+                                @else
+                                    <button disabled class="dropdown-item ">
+                                        <i class="ti ti-trash me-1"></i> @lang('site.show')
+                                    </button>
+                                @endif --}}
                             </ul>
                         </div>
                     </td>
@@ -93,7 +106,7 @@
                                         $oldValue = $oldValue !== '—' ? \Carbon\Carbon::parse($oldValue)->format('d M Y - h:i A') : '—';
                                         $newValue = $newValue !== '—' ? \Carbon\Carbon::parse($newValue)->format('d M Y - h:i A') : '—';
                                     }
-                                    if ($key === 'name' || $key === 'description') {
+                                    if ($key === 'name' || $key === 'description' || ) {
                                         $oldValue = json_decode($oldValue, true)[app()->getLocale()] ?? '—';
                                         $newValue = json_decode($newValue, true)[app()->getLocale()] ?? '—';
                                     }

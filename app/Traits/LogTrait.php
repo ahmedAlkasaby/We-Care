@@ -23,7 +23,7 @@ trait LogTrait{
     public function logActivity($action)
     {
         Log::create([
-            'name' => class_basename($this),
+            'name' => class_basename($this->getTable()),
             'description' => __("site.activity_log", [
                 'action' => __("site.$action"),
                 'model' => class_basename($this),
@@ -33,10 +33,8 @@ trait LogTrait{
             'model_type' => get_class($this),
             'user_id' => auth()->id() ?? null,
             'action' => $action,
-            'properties' => $action === 'updated' ? [
-                'old' => $this->getOriginal(),
-                'new' => $this->getChanges(),
-            ] : null,
+            'properties' => $action === 'updated' ? $this->getCustomLogProperties() : null,
+
         ]);
     }
 }

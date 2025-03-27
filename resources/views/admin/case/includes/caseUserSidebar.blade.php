@@ -54,28 +54,24 @@
                 </ul>
                 <div class="d-flex flex-column gap-2">
                     @if (auth()->user()->hasPermission('cases.update') && $case->can_edit())
-                    <a class="edit-btn btn btn-primary waves-effect waves-light" href="{{route("
-                        cases.edit",["case"=>$case->id])}}">
+                    <a class="edit-btn btn btn-primary waves-effect waves-light" href="{{route("cases.edit",["case"=>$case->id])}}">
                         <i class="ti ti-pencil me-1"></i> @lang('site.Edit')
                     </a>
                     @else
-                    <button disabled class="edit-btn btn btn-primary waves-effect waves-light" href="{{route("
-                        cases.edit",["case"=>$case->id])}}">
+                    <button disabled class="edit-btn btn btn-primary waves-effect waves-light">
                         <i class="ti ti-pencil me-1"></i> @lang('site.Edit')
                     </button>
                     @endif
 
                     @if (auth()->user()->hasPermission('transfers.store') && $case->this_case_need())
                     <button data-bs-toggle="modal" data-bs-target="#caseTransfer_{{ $case->id }}"
-                        class="edit-btn btn btn-success waves-effect waves-light" href="{{route("
-                        cases.edit",["case"=>$case->id])}}">
+                        class="edit-btn btn btn-success waves-effect waves-light" href="{{route("cases.edit",["case"=>$case->id])}}">
                         <span><i class="fa-solid fa-money-bill-transfer me-2"></i> <span
                                 class="d-none d-sm-inline-block">@lang('site.transfer')</span></span>
                     </button>
                     @else
                     <button disabled data-bs-toggle="modal" data-bs-target="#caseTransfer_{{ $case->id }}"
-                        class="edit-btn btn btn-success waves-effect waves-light" href="{{route("
-                        cases.edit",["case"=>$case->id])}}">
+                        class="edit-btn btn btn-success waves-effect waves-light" href="{{route("cases.edit",["case"=>$case->id])}}">
                         <span><i class="fa-solid fa-money-bill-transfer me-2"></i> <span
                                 class="d-none d-sm-inline-block">@lang('site.transfer')</span></span>
                     </button>

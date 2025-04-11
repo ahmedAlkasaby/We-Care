@@ -33,7 +33,7 @@ trait LogTrait{
             'model_type' => get_class($this),
             'user_id' => auth()->id() ?? null,
             'action' => $action,
-            'properties' => $action === 'updated' ? $this->getCustomLogProperties() : null,
+            // 'properties' => $action === 'updated' ? $this->getCustomLogProperties() : null,
 
         ]);
     }

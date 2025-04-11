@@ -34,7 +34,7 @@
                 <span class="badge bg-label-primary me-1">{{ $donation->price }}</span>
             </td>
             <td class="text-nowrap text-sm-center">
-                <span class="badge bg-label-secondary me-1">{{ $donation->get_doner_price()
+                <span class="badge bg-label-secondary me-1">{{ $donation->doner_price
                     }}</span>
             </td>
 
@@ -74,7 +74,7 @@
                     <ul class="dropdown-menu">
                         @if(auth()->user()->hasPermission('donations.update'))
                         @if($donation->case)
-                        @if($donation->case->items->count() > 0)
+                        @if($donation->case->type=='items')
                         <button data-bs-toggle="modal" data-bs-target="#donationTransferItems_{{ $donation->id }}"
                             class="dropdown-item" type="button">
                             <span><i class="ti ti-file-export me-sm-1"></i> <span

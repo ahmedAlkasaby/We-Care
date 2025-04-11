@@ -62,7 +62,7 @@
 </table>
 
 <!-- المودالات خارج الجدول -->
-@foreach ($logs as $log)
+{{-- @foreach ($logs as $log)
     @php
         // تأكد من أن `properties` نص وليس مصفوفة
         $properties = is_string($log->properties) ? json_decode($log->properties, true) : $log->properties;
@@ -137,5 +137,5 @@
             </div>
         </div>
     </div>
-@endforeach
+@endforeach --}}
 

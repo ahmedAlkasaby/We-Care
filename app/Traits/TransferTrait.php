@@ -43,9 +43,7 @@ trait TransferTrait{
 
 
         $transferCreated=Transfer::find($transfer_id);
-        $transferCreated->update([
-            'type'=>'items'
-        ]);
+        $transferPrice=0;
         foreach ($items as $itemId => $itemData) {
             $item=Item::find($itemId);
             if ($itemData['amount'] >0) {
@@ -54,22 +52,25 @@ trait TransferTrait{
                 $item->update([
                     'amount'=>$item->amount - $itemData['amount']
                 ]);
+                $transferPrice+=($item->price*$itemData['amount']);
                 $pivotRecord=$case->items()->wherePivot('item_id',$itemId)->first();
                 $case->items()->updateExistingPivot($itemId, ['amount_raised' => $pivotRecord->pivot->amount_raised +$itemData['amount']]);
 
             }
-
         }
+        $transferCreated->update([
+            'type'=>'items',
+            'price'=>$transferPrice
+
+        ]);
     }
 
     public function transferByItemsByDonation($case_id,$items,$transfer_id,$donation_id){
         $case=CharityCase::find($case_id);
         $donation=Donation::find($donation_id);
         $transferCreated=Transfer::find($transfer_id);
-        $transferCreated->update([
-            'type'=>'items'
-        ]);
 
+        $transferPrice=0;
         foreach ($items as $itemId => $itemData) {
             if ($itemData['amount'] >0) {
                 $item=Item::find($itemId);
@@ -80,6 +81,10 @@ trait TransferTrait{
                     $item->update([
                         'amount'=>$item->amount - $itemData['amount']
                     ]);
+
+                    $transferPrice+=($item->price*$itemData['amount']);
+
+
                     $pivotRecord=$case->items()->wherePivot('item_id',$itemId)->first();
                     $case->items()->updateExistingPivot($itemId, ['amount_raised' => $pivotRecord->pivot->amount_raised +$itemData['amount']]);
 
@@ -90,6 +95,16 @@ trait TransferTrait{
                 }
             }
         }
+        $transferCreated->update([
+            'type'=>'items',
+            'price'=>$transferPrice
+        ]);
+        $donation->update([
+            'doner_price'=>$donation->doner_price+$transferCreated->price
+        ]);
+        $case->update([
+            'price_raised'=>$case->price_raised + $transferPrice
+        ]);
 
     }
 
@@ -108,6 +123,7 @@ trait TransferTrait{
             'price_raised'=>$case->price_raised + $price
         ]);
     }
+
     public function transferByPriceByDonation($case_id,$price,$transfer_id,$donation_id){
         $case=CharityCase::find($case_id);
         $donation=Donation::find($donation_id);
@@ -125,7 +141,7 @@ trait TransferTrait{
         ]);
 
         $donation->update([
-            'doner_price'=>$donation->get_doner_price()+$transferCreated->price
+            'doner_price'=>$donation->doner_price+$transferCreated->price
         ]);
     }
 
@@ -136,6 +152,7 @@ trait TransferTrait{
         if($donation_id){
             $donation=Donation::find($donation_id);
         }
+        $transfersPrice=0;
         foreach ($transfer->items as $item) {
             $item->update([
                 'amount'=>$item->amount + $item->pivot->amount
@@ -147,6 +164,7 @@ trait TransferTrait{
             }
 
             $case->items()->updateExistingPivot($item->id, ['amount_raised' => $pivotCase->pivot->amount_raised - $pivotTransfer->pivot->amount]);
+            $transfersPrice+=($item->price*$pivotTransfer->pivot->amount);
             if($donation_id){
 
                 if ($pivotDonation && $pivotDonation->pivot && $pivotDonation->pivot->doner_amount != null) {
@@ -155,9 +173,15 @@ trait TransferTrait{
             }
         };
         $case->update([
-
-            'active'=>1
+            'active'=>1,
+            'price_raised'=>$case->price_raised - $transfersPrice
         ]);
+        if($donation_id){
+            $donation->update([
+                'doner_price'=>$donation->doner_price - $transfersPrice
+            ]);
+
+        }
 
 
         $transfer->items()->detach();
@@ -184,7 +208,7 @@ trait TransferTrait{
             // donation
             $donation=Donation::find($transfer->donation_id);
             $donation->update([
-                'doner_price'=>$donation->get_doner_price() - $transfer->price
+                'doner_price'=>$donation->doner_price - $transfer->price
             ]);
         }
         $transfer->items()->detach();

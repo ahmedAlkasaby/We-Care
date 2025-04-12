@@ -63,6 +63,9 @@ trait TransferTrait{
             'price'=>$transferPrice
 
         ]);
+        $case->update([
+            'price_raised'=>$case->price_raised + $transferPrice
+        ]);
     }
 
     public function transferByItemsByDonation($case_id,$items,$transfer_id,$donation_id){

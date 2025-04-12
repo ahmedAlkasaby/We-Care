@@ -64,7 +64,7 @@ class TransferController extends MainController
             $case=CharityCase::find($request->case_id);
 
             if($request->input('items')){
-                $this->transferByItemsByDonation($case->id,$request->input('items'),$transfer->id,$request->donation_id);
+                $this->transferByItemsByDmonation($case->id,$request->input('items'),$transfer->id,$request->donation_id);
             }else{
 
                 $this->transferByPriceByDonation($case->id,$request->price,$transfer->id,$request->donation_id);

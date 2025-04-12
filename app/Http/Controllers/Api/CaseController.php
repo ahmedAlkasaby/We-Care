@@ -38,7 +38,7 @@ class CaseController extends MainController
 
 
 
-        $cases = CharityCase::with('users','items','images','volunteer','category','donations','transfers')->apiFilter([
+        $cases = CharityCase::with(['users','user.region','user.city','items','images','volunteer','category','donations','transfers'])->apiFilter([
             'search' => $request->search,
             'city_id' => $request->city_id,
             'region_id' => $request->region_id,
@@ -53,7 +53,7 @@ class CaseController extends MainController
             'order_by' => $request->order_by
         ])->paginate(10);
 
-       
+
 
 
 

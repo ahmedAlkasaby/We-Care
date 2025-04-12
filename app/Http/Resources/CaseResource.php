@@ -31,8 +31,8 @@ class CaseResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user'=>new UserResource($this->user),
-            'category_case'=>new CategoryCaseResource($this->category),
+            'user'=>new UserResource($this->whenLoaded('user')),
+            'category_case'=>new CategoryCaseResource($this->whenLoaded('category')),
             'type'=>$this->type,
             'is_event'=>$this->is_event,
             'is_like'=>$this->check_case_in_likes($this->id),
@@ -56,8 +56,8 @@ class CaseResource extends JsonResource
             }),
             'donators'=>(string)Donation::where('case_id',$this->id)->count(),
             'volunteer'=>new VolunteerResource($this->volunteer),
-            'items'=>ItemResource::collection($this->items),
-            'case_images'=>ImageResource::collection($this->images),
+            'items'=>ItemResource::collection($this->whenLoaded('items')),
+            'case_images'=>ImageResource::collection($this->whenLoaded('images')),
         ];
     }
 

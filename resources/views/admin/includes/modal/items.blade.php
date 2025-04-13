@@ -17,7 +17,7 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>{{ $item->namelang() }}</span>
                             <span class="badge bg-primary">{{ Route::is('purchases.index') ? $item->pivot->unit_price : $item->price ?? __('site.null') }}</span>
-                            <span class="badge bg-primary rounded-pill">{{ $item->pivot->amount }} </span>
+                            <span class="badge bg-primary rounded-pill">{{ $item->pivot->amount - $item->pivot->amount_raised }} </span>
                         </li>
                     @endforeach
                 </ul>

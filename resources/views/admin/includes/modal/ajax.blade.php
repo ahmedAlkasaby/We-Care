@@ -37,7 +37,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    // إغلاق النافذة المنبثقة بعد نجاح الطلب
+                    // إغلاق النافذة  بعد نجاح الطلب
                     $('#{{ $modelId }}').modal('hide');
                     toastr.success(response.message);
                     $('.table').load(window.location.href + ' .table');

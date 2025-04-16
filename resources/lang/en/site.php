@@ -841,10 +841,18 @@ return array (
     'the_case_already_in_likes'=>'The Case Already In Likes',
     'index'   => 'Read',
     'show'    => 'Show',
-    'toggle'  => 'Enable',
+    'toggle'  => 'Toggle',
     'store'   => 'Create',
     'update'  => 'Edit',
     'destroy' => 'Delete',
+    "not_found" => 'Not Found',
+    'select_all' => 'Select All',
+
+    'created' => 'created',
+    'updated' => 'updated',
+    'deleted' => 'deleted',
+
+    'activity_log' => ":action in :model by :user"
 
 
 

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CharityCase extends MainModel
 {
+    
+
 
     protected $fillable=[
         'volunteer_id',
@@ -31,6 +33,95 @@ class CharityCase extends MainModel
         'done',
         'order_no'
     ];
+
+
+
+    public function getCustomLogProperties()
+    {
+        $original = $this->getOriginal();
+        $changes = $this->getChanges();
+
+        // $itemChanges = $this->trackItemChanges();
+
+        $original = $this->formatLogData($original);
+        $changes = $this->formatLogData($changes);
+
+        return [
+            'old' => $original,
+            'new' => $changes,
+            'items' => $itemChanges ?? null
+        ];
+    }
+
+
+    protected function formatLogData($data)
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        if (isset($data['user_id'])) {
+            $data['user_id'] = optional(User::find($data['user_id']))->name ?? 'N/A';
+        }
+
+        if (isset($data['volunteer_id'])) {
+            $data['volunteer_id'] = optional(User::find($data['volunteer_id']))->name ?? 'N/A';
+        }
+
+        if (isset($data['category_case_id'])) {
+            $data['category_case_id'] = optional(CategoryCase::find($data['category_case_id']))->name ?? 'N/A';
+        }
+
+        return $data;
+    }
+
+
+    protected function trackItemChanges()
+    {
+        $oldItems = $this->items()->withTrashed()->get()->keyBy('id')->toArray();
+        $newItems = $this->items()->get()->keyBy('id')->toArray();
+
+        $changes = [];
+
+        // مقارنة العناصر القديمة بالجديدة
+        foreach ($oldItems as $id => $oldItem) {
+            if (!isset($newItems[$id])) {
+                $changes['deleted'][] = [
+                    'item' => $oldItem['name'],
+                    'quantity' => $oldItem['quantity'],
+                    'price' => $oldItem['price'],
+                ];
+            } elseif ($oldItem != $newItems[$id]) {
+                $changes['updated'][] = [
+                    'item' => $oldItem['name'],
+                    'old' => [
+                        'quantity' => $oldItem['quantity'],
+                        'price' => $oldItem['price'],
+                    ],
+                    'new' => [
+                        'quantity' => $newItems[$id]['quantity'],
+                        'price' => $newItems[$id]['price'],
+                    ],
+                ];
+            }
+        }
+
+        // العناصر المضافة حديثًا
+        foreach ($newItems as $id => $newItem) {
+            if (!isset($oldItems[$id])) {
+                $changes['added'][] = [
+                    'item' => $newItem['name'],
+                    'quantity' => $newItem['quantity'],
+                    'price' => $newItem['price'],
+                ];
+            }
+        }
+
+        return $changes;
+    }
+
+
+
 
 
     public function details()
@@ -70,7 +161,7 @@ class CharityCase extends MainModel
 
     public function is_archive()
     {
-        if ($this->get_price_raised() >= $this->get_price()  || $this->archive == 1) {
+        if ($this->price_raised >= $this->price  || $this->archive == 1) {
             return true;
         }
         return false;
@@ -100,12 +191,12 @@ class CharityCase extends MainModel
     }
 
     public function check_status(){
-        if ($this->repeating === 'none' && $this->archive==1 && $this->get_price_raised() >= $this->get_price()) {
+        if ($this->repeating === 'none' && $this->archive==1 && $this->price_raised >= $this->price) {
             return __('site.finish');
-        }elseif ($this->get_price_raised() < $this->get_price() && $this->date_end && $this->date_end < now()) {
-            $this->active=0;
-            $this->archive=1;
-            $this->save();
+        }elseif ($this->price_raised < $this->price && $this->date_end && $this->date_end < now()) {
+            $this->withoutEvents(function () {
+                $this->update(['active' => 0, 'archive' => 1]);
+            });
             return __('site.expire');
         }elseif($this->archive==1) {
             return __('site.archive');
@@ -133,74 +224,6 @@ class CharityCase extends MainModel
             return 'badge bg-label-info';
         }
     }
-
-    public function getPriceAttribute(){
-        if ($this->type=='price') {
-            return $this->attributes['price'];
-        }else{
-            $totalPrice = $this->items->sum(function($item) {
-                return $item->pivot->amount * $item->price;
-            });
-
-            $this->update(['price'=>$totalPrice]);
-            return $this->attributes['price'];
-
-        }
-    }
-
-    public function getPriceRaisedAttribute(){
-        if ($this->type=='price') {
-            return $this->attributes['price_raised'];
-
-        }else{
-            $price_raised=$this->items->sum(function($item){
-                return $item->price * $item->pivot->amount_raised ;
-            });
-
-            $this->update(['price_raised'=>$price_raised]);
-
-            return $this->attributes['price_raised'];
-
-        }
-    }
-
-    public function get_price()
-    {
-        if ($this->type=='price') {
-            return $this->attributes['price'];
-        }else{
-            $totalPrice = $this->items->sum(function($item) {
-                return $item->pivot->amount * $item->price;
-            });
-
-            $this->update(['price'=>$totalPrice]);
-            return $this->attributes['price'];
-
-        }
-    }
-
-    public function get_price_raised()
-    {
-        if ($this->type=='price') {
-            return $this->attributes['price_raised'];
-
-        }else{
-            $price_raised=$this->items->sum(function($item){
-                return $item->price * $item->pivot->amount_raised ;
-            });
-
-            $this->update(['price_raised'=>$price_raised]);
-
-            return $this->attributes['price_raised'];
-
-        }
-    }
-
-
-
-
-
-
 
 
     public function scopeApiFilter($query, $filters) {

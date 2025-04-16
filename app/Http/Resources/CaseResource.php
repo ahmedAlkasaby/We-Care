@@ -31,8 +31,8 @@ class CaseResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user'=>new UserResource($this->user),
-            'category_case'=>new CategoryCaseResource($this->category),
+            'user'=>new UserResource($this->whenLoaded('user')),
+            'category_case'=>new CategoryCaseResource($this->whenLoaded('category')),
             'type'=>$this->type,
             'is_event'=>$this->is_event,
             'is_like'=>$this->check_case_in_likes($this->id),
@@ -47,17 +47,17 @@ class CaseResource extends JsonResource
             'repeating'=>$this->repeating,
             'next_donation_date'=>Carbon::parse($this->next_donation_date)->format('d/m/Y'),
             'date_start'=>Carbon::parse($this->date_start)->format('d/m/Y'),
-            'date_end'=>Carbon::parse($this->date_end)->format('d/m/Y'),
+            'date_end' => $this->date_end ? Carbon::parse($this->date_end)->format('d/m/Y') : null,
             'remaining_days_until_end' => $this->remainingDaysUntilEnd(),
-            'price'=>(string)$this->get_price(),
-            'price_raised'=>(string)$this->get_price_raised(),
+            'price'=>(string)$this->price,
+            'price_raised'=>(string)$this->price_raised,
             'waiting_price'=> (string)$this->donations->where('confirm', 0)->sum(function($donation) {
-                return $donation->get_price();
+                return $donation->price;
             }),
             'donators'=>(string)Donation::where('case_id',$this->id)->count(),
             'volunteer'=>new VolunteerResource($this->volunteer),
-            'items'=>ItemResource::collection($this->items),
-            'case_images'=>ImageResource::collection($this->images),
+            'items'=>ItemResource::collection($this->whenLoaded('items')),
+            'case_images'=>ImageResource::collection($this->whenLoaded('images')),
         ];
     }
 

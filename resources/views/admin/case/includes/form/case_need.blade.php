@@ -109,7 +109,7 @@
             'label' => __('site.price'),
             'id' => 'price-field',
             'fieldName' => 'price',
-            'fieldValue' => $case->get_price(),
+            'fieldValue' => $case->price,
             'place' => __('site.Enter price'), // Optional placeholder
             'required' => true
             ])
@@ -160,7 +160,7 @@
                 <i class="ti ti-arrow-left me-sm-1 me-0"></i>
                 <span class="align-middle d-sm-inline-block d-none">@lang('site.previous')</span>
             </button>
-            <button  class="btn btn-success btn-submit">@lang('site.submit')</button>
+            <button class="btn btn-success btn-submit">@lang('site.submit')</button>
         </div>
     </div>
     @endif
@@ -235,7 +235,7 @@
                 <span class="align-middle d-sm-inline-block d-none">@lang("site.previous")</span>
             </button>
 
-            <button  class="btn btn-success btn-submit waves-effect waves-light">{{ __('site.submit')}}</button>
+            <button class="btn btn-success btn-submit waves-effect waves-light">{{ __('site.submit')}}</button>
         </div>
     </div>
 </div>

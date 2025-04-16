@@ -20,11 +20,11 @@ class TransferController extends MainController
 {
     use TransferTrait;
 
- 
+
 
     public function index()
     {
-        $transfers=Transfer::filter(request('search'))->paginate(50);
+        $transfers=Transfer::with('items','case')->filter(request('search'))->paginate(50);
         $storage=Storage::find(1);
         $transfers_with_items=Transfer::where('type','items')->get();
         $transfers_with_price=Transfer::where('type','price')->get();
@@ -64,7 +64,7 @@ class TransferController extends MainController
             $case=CharityCase::find($request->case_id);
 
             if($request->input('items')){
-                $this->transferByItemsByDonation($case->id,$request->input('items'),$transfer->id,$request->donation_id);
+                $this->transferByItemsByDmonation($case->id,$request->input('items'),$transfer->id,$request->donation_id);
             }else{
 
                 $this->transferByPriceByDonation($case->id,$request->price,$transfer->id,$request->donation_id);

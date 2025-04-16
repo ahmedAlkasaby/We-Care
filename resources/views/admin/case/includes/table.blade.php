@@ -77,15 +77,7 @@
                         @endif
 
 
-                        {{-- @if ($case->items->count()>0 && $case->this_case_need())
-                        <button type="button" class="dropdown-item  recycle-case" data-case-id="{{ $case->id }}">
-                            <span><i class="fa-solid fa-recycle me-2"></i><span
-                                    class="d-none d-sm-inline-block">@lang('site.recycle')</span></span></button>
-                        @else
-                        <button disabled type="button" class="dropdown-item"> <span><i
-                                    class="fa-solid fa-recycle me-2"></i><span
-                                    class="d-none d-sm-inline-block">@lang('site.recycle')</span></span></button>
-                        @endif --}}
+                      
                         @if ($case->archive==1)
                         @if ($case->check_status()=='finish')
                         <button type="button" disabled class="dropdown-item"><span><i

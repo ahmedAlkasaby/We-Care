@@ -41,6 +41,7 @@ class CaseService extends MainController{
             $data['price'] = $request->price;
         } else {
             $data['price'] = 0;
+            $data['type']='items';
         }
         $data["end_date"]= $request->date_end;
         $data["done"]= 1;

@@ -8,7 +8,7 @@
                             <i class="ti ti-truck ti-28px"></i>
                         </span>
                     </div>
-                    <h4 id="case-that-need-price-count" class="mb-0">{{$case_that_need_price->count()}}</h4>
+                    <h4 id="case-that-need-price-count" class="mb-0">{{$case_that_need_price}}</h4>
                 </div>
                 <p class="mb-1">{{__('site.case_that_need_price')}}</p>
             </div>
@@ -24,7 +24,7 @@
                             <i class="ti ti-alert-triangle ti-28px"></i>
                         </span>
                     </div>
-                    <h4 id="case-that-need-items-count" class="mb-0">{{$case_that_need_items->count()}}</h4>
+                    <h4 id="case-that-need-items-count" class="mb-0">{{$case_that_need_items}}</h4>
                 </div>
                 <p class="mb-1">{{__('site.case_that_need_items')}}</p>
             </div>

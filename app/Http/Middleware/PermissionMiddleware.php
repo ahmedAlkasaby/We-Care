@@ -19,6 +19,7 @@ class PermissionMiddleware
         $routeName = $request->route()->getName();
 
         if (!$routeName) {
+        
             return $next($request);
         }
 
@@ -36,7 +37,7 @@ class PermissionMiddleware
             if (!$permissionExists) {
                 return $next($request);
             }
-            
+
             abort(403, __('auth.not_permission_for_this_action'));
         }
 

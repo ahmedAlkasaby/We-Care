@@ -17,6 +17,7 @@ class Transfer extends MainModel
         'archive'
     ];
 
+
     public function items()
     {
         return $this->belongsToMany(Item::class, 'transfer_item')->withPivot('amount');
@@ -26,17 +27,7 @@ class Transfer extends MainModel
         return $this->belongsTo(CharityCase::class, 'case_id');
     }
 
-    public function get_price(){
-        if($this->type=='price'){
-            return $this->price;
-        }else{
-            return $this->items->sum(function($item){
-                return $item->price * $item->pivot->amount;
-            });
-        }
-    }
-
-
+    
 
     public function scopeFilter($query, $search = null)
     {

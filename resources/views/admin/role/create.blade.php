@@ -12,10 +12,10 @@
                     @csrf
                     <div class="col-12 mb-4">
                         <label class="form-label">@lang('site.name')</label>
-                        <input type="text" name="name" class="form-control" tabindex="-1" value="{{ old('name') }}" required />
+                        <input type="text" name="name" class="form-control" tabindex="-1"  required />
                     </div>
 
-                    @include('admin.role.includes.formPermission')
+                    @include('admin.role.includes.createPermission')
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary me-sm-3 me-1">@lang('site.add')</button>
                         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">

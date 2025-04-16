@@ -1,34 +1,41 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\Dashboard\FaqController;
-use App\Http\Controllers\Dashboard\CaseController;
-use App\Http\Controllers\Dashboard\CityController;
-use App\Http\Controllers\Dashboard\ItemController;
-use App\Http\Controllers\Dashboard\PageController;
-use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\AdminController;
+
+use App\Http\Controllers\Dashboard\CaseController;
+use App\Http\Controllers\Dashboard\CategoryCaseController;
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CityController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DonationController;
 use App\Http\Controllers\Dashboard\DonerController;
+use App\Http\Controllers\Dashboard\FaqController;
 use App\Http\Controllers\Dashboard\ImpactController;
-use App\Http\Controllers\Dashboard\RegionController;
-use App\Http\Controllers\Dashboard\SliderController;
+use App\Http\Controllers\Dashboard\ItemController;
+use App\Http\Controllers\Dashboard\LogController;
 use App\Http\Controllers\Dashboard\MessageController;
+use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\Dashboard\PageController;
 use App\Http\Controllers\Dashboard\PaymentController;
 use App\Http\Controllers\Dashboard\ProfileController;
-use App\Http\Controllers\Dashboard\SettingController;
-use App\Http\Controllers\Dashboard\StorageController;
-use App\Http\Controllers\Dashboard\CategoryController;
-use App\Http\Controllers\Dashboard\DonationController;
 use App\Http\Controllers\Dashboard\PurchaseController;
+use App\Http\Controllers\Dashboard\RegionController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\Dashboard\SliderController;
+use App\Http\Controllers\Dashboard\StorageController;
 use App\Http\Controllers\Dashboard\TransferController;
-use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\VolunteerController;
-use App\Http\Controllers\Dashboard\CategoryCaseController;
-use App\Http\Controllers\Dashboard\NotificationController;
+use App\Http\Controllers\MainController;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Yajra\DataTables\Facades\DataTables;
+
+
 
 
 
@@ -85,6 +92,8 @@ Route::get('/a',function(){
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/change/lang',[MainController::class, 'lang'])->name('change.lang');
 Route::get('/change/theme',[MainController::class, 'theme'])->name('change.theme');
+
+
 
 
 
@@ -179,6 +188,9 @@ Route::group(['prefix'=>'dashboard','middleware' => ['auth','is_admin', 'setUser
     // notifications
     Route::resource("notifications",NotificationController::class)->except("show");
     Route::put("notifications/{notification}/makeAsRead",[NotificationController::class,'makeAsRead'])->name('notifications.markAsRead');
+
+    // logs
+    Route::get('logs',[LogController::class,'index'])->name('logs.index');
 
 
 });

@@ -63,15 +63,22 @@ class CharityCasesSeeder extends Seeder
             ]);
 
             // إرفاق العناصر إلى الحالة
+            $total_price=0;
             for ($j = 0; $j < 5; $j++) {
                 $item = Item::inRandomOrder()->first();
                 $charityCase->items()->attach($item->id, [
                     'amount' => 5,
                     'amount_raised' => 0,
                 ]);
+                $total_price += $item->price * 5;
+
 
                 $charityCase->images()->create(['image'=>'impact_images/impactDefoult.jpeg']);
             }
+            $charityCase->update([
+                'price' => $total_price,
+                'price_raised' => 0,
+            ]);
         }
         for ($i = 0; $i < 30; $i++) {
             // إنشاء المستخدم للحالة

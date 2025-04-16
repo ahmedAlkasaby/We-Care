@@ -10,25 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CharityCase extends MainModel
 {
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::retrieved(function ($case) {
-            if ($case->type == 'items') {
-                $newPrice = $case->items->sum(fn($item) => $item->pivot->amount * $item->price);
-                $newPriceRaised = $case->items->sum(fn($item) => $item->price * $item->pivot->amount_raised);
-
-                // تحديث القيم فقط إذا كانت مختلفة عن المخزنة
-                if ($case->price != $newPrice || $case->price_raised != $newPriceRaised) {
-                    $case->updateQuietly([
-                        'price' => $newPrice,
-                        'price_raised' => $newPriceRaised,
-                    ]);
-                }
-            }
-        });
-    }
+    
 
 
     protected $fillable=[

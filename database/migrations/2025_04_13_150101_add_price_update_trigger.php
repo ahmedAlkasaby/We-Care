@@ -10,40 +10,48 @@ class AddPriceUpdateTrigger extends Migration
     public function up()
     {
         DB::unprepared('
-            CREATE TRIGGER update_case_price_after_item_update
-            AFTER UPDATE ON items
-            FOR EACH ROW
-            BEGIN
-                DECLARE old_price DECIMAL(10, 2);
-                DECLARE new_price DECIMAL(10, 2);
-                DECLARE price_diff DECIMAL(10, 2);
-                DECLARE total_amount DECIMAL(10, 2);
-                DECLARE total_amount_raised DECIMAL(10, 2);
+    CREATE TRIGGER update_case_price_after_item_update
+    AFTER UPDATE ON items
+    FOR EACH ROW
+    BEGIN
+        DECLARE price_diff DECIMAL(10, 2);
+        DECLARE qty INT;
+        DECLARE qty_raised INT;
+        DECLARE case_id INT;
+        DECLARE done INT DEFAULT FALSE;
 
-                IF OLD.price != NEW.price THEN
-                    SET old_price = OLD.price;
-                    SET new_price = NEW.price;
-                    SET price_diff = (new_price - old_price);
+        DECLARE cur CURSOR FOR
+            SELECT charity_case_id, amount, amount_raised
+            FROM charity_case_item
+            WHERE item_id = OLD.id;
 
-                    SET total_amount_raised = (
-                        SELECT IFNULL(SUM(c.amount_raised * price_diff), 0)
-                        FROM charity_case_item c
-                        WHERE c.item_id = OLD.id
-                    );
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
-                    SET total_amount = (
-                        SELECT IFNULL(SUM(c.amount * price_diff), 0)
-                        FROM charity_case_item c
-                        WHERE c.item_id = OLD.id
-                    );
+        SET price_diff = NEW.price - OLD.price;
 
-                    UPDATE charity_cases
-                    SET price = price + total_amount,
-                        price_raised = price_raised + total_amount_raised
-                    WHERE id IN (SELECT charity_case_id FROM charity_case_item WHERE item_id = OLD.id);
-                END IF;
-            END;
-        ');
+        OPEN cur;
+
+        read_loop: LOOP
+            FETCH cur INTO case_id, qty, qty_raised;
+
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+
+            -- أهو كدا بننفذ اللي حضرتك عايزه بالحرف
+            UPDATE charity_cases
+            SET
+                price = price + (qty * price_diff),
+                price_raised = price_raised + (qty_raised * price_diff)
+            WHERE id = case_id;
+
+        END LOOP;
+
+        CLOSE cur;
+    END;
+');
+
+
     }
 
     public function down()

@@ -18,3 +18,6 @@ yarn-error.log
 /.idea
 /.vscode
 storage/woudian-project-firebase-adminsdk-44c8h-3d70edd94d.json
+_ide_helper_models.php
+_ide_helper.php
+.phpstorm.meta.php

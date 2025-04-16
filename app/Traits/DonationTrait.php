@@ -24,7 +24,7 @@ trait DonationTrait{
         ]);
         $doner=User::find($doner_id);
         $doner->update([
-            'amount'=>$doner->amount + $donation->get_price()
+            'amount'=>$doner->amount + $donation->price
         ]);
         $donation->images()->create([
             'image'=>'donation_images\donation_from_charity.png'
@@ -41,26 +41,32 @@ trait DonationTrait{
 
 
         ]);
+        $donationPrice=0;
         foreach ($items as $item) {
             $donation->items()->attach($item['item_id'], [
                 'amount' => $item['amount'],
-                // 'remain_amount'=>$item['amount'],
             ]);
             $item=Item::find($item['item_id']);
             $item->update([
                 'amount'=>$item->amount + $item['amount']
             ]);
+            $donationPrice+=($item->price*$item['amount']);
+
         }
         $donation->images()->create([
             'image'=>'donation_images\donation_from_charity.png'
         ]);
+        $donation->update([
+            'price'=> $donationPrice
+        ]);
+
     }
 
     public function addDonateMoneyToDoner($donation_id){
         $donation=Donation::find($donation_id);
         $doner=User::find($donation->doner_id);
         $doner->update([
-            'amount'=> $doner->amount + $donation->get_price()
+            'amount'=> $doner->amount + $donation->price
         ]);
 
     }
@@ -76,7 +82,7 @@ trait DonationTrait{
     public function confirmDonation($donation_id,$items){
         $donation=Donation::find($donation_id);
         if ($donation->type == 'items') {
-
+            $donationPrice=0;
             foreach ($items as $item) {
                 $donation->items()->attach($item['item_id'], [
                     'amount' => $item['amount'],
@@ -86,20 +92,22 @@ trait DonationTrait{
                 $item->update([
                     'amount'=>$item->amount + $item['amount']
                 ]);
+                $donationPrice+=($item->price*$item['amount']);
             }
         }else{
             $storage=Storage::find(1);
             $storage->update([
-                'price'=>$storage->price + $donation->get_price()
+                'price'=>$storage->price + $donation->price
             ]);
             $doner=User::find($donation->doner_id);
             $doner->update([
-                'amount'=>$doner->amount + $donation->get_price()
+                'amount'=>$doner->amount + $donation->price
             ]);
         }
 
         $donation->update([
-            'confirm'=>1
+            'confirm'=>1,
+            'price'=> $donationPrice
         ]);
 
     }

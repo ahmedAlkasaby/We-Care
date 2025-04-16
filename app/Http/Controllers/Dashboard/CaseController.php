@@ -7,8 +7,6 @@ use App\Exports\UsersExport;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\CaseRequest;
 use App\Imports\CaseImport;
-use App\Imports\UsersImport;
-use App\Models\CaseDetail;
 use App\Models\Category;
 use App\Models\CategoryCase;
 use App\Models\CharityCase;
@@ -49,13 +47,13 @@ class CaseController extends MainController
     {
         $total_price_for_case_that_need_price = $this->calculateTotalPriceForCasesNeededMoney();
 
-        $case_that_need_items = CharityCase::where('active', 1)->where('type','items')->get();
+        $case_that_need_items = CharityCase::where('active', 1)->where('type','items')->count();
 
-        $case_that_need_price = CharityCase::where('active', 1)->where('type','price')->get();
+        $case_that_need_price = CharityCase::where('active', 1)->where('type','price')->count();
 
         $total_price_for_case_that_need_items = $this->calculateTotalPriceForCasesNeededItems();
 
-        $cases = CharityCase::with('user','category','items','transfers')->filter(
+        $cases = CharityCase::with('user','category','items','transfers','donations')->filter(
             $request->search,
             $request->input('volunteer_id'),
             $request->input('category_case_id'),
@@ -85,12 +83,8 @@ class CaseController extends MainController
         $case_categories = CategoryCase::where('active',1)->get();
         $category_array=$this->nameArray($case_categories);
         $cities = City::where('active',1)->with('regions')->get();
-        // $regions = Region::get();
         $storage = Storage::find(1);
         $city_array=$this->nameArray($cities);
-        // if ($request->ajax()) {
-        //     return view('admin.case.includes.table', get_defined_vars())->render();
-        // }
         $volunteers=User::where("role","volunteer")->get();
         $volunteersOptions =$this->getVolunteersWithArrayWithFilter();
 

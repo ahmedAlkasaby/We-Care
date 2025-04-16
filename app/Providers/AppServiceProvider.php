@@ -9,7 +9,7 @@ use GuzzleHttp\ClientInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Kreait\Firebase\Messaging;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,8 +23,7 @@ class AppServiceProvider extends ServiceProvider
             $projectId = config('firebase.project_id'); // الحصول على projectId من ملف الإعدادات
             return new FirebaseNotificationService($projectId);
         });
-        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('Debugbar', \Barryvdh\Debugbar\Facades\Debugbar::class);
+
         // Log::info('تم ربط GuzzleHttp\ClientInterface بـ GuzzleHttp\Client');
         // $this->app->bind(ClientInterface::class, Client::class);
 
@@ -40,5 +39,14 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Paginator::useBootstrapFive();
+        DB::listen(function ($query) {
+            Log::info("=====================================");
+            Log::info("📌 Query Executed:");
+            Log::info("SQL      => " . $query->sql);
+            Log::info("Bindings => " . json_encode($query->bindings));
+            Log::info("Time     => " . $query->time . " ms");
+            Log::info("=====================================\n\n");
+        });
+
     }
 }

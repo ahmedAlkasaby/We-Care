@@ -23,25 +23,7 @@ class Donation extends MainModel
 
     ];
 
-    public function get_price(){
-        if($this->type=='price'){
-            return $this->price;
-        }else{
-            return $this->items->sum(function($item){
-                return $item->price * $item->pivot->amount;
-            });
-        }
-    }
-
-    public function get_doner_price(){
-        if($this->type=='price'){
-            return $this->doner_price;
-        }else{
-            return $this->items->sum(function($item){
-                return $item->doner_price * $item->pivot->amount;
-            });
-        }
-    }
+   
 
     public function doner()
     {

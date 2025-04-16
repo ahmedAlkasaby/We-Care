@@ -19,7 +19,7 @@ class TransferResource extends JsonResource
             'case'=>new CaseResource($this->case),
             'donation'=>new DonationResource($this->donation),
             'items'=>$this->items,
-            'price'=>$this->get_price(),
+            'price'=>$this->price,
             'type'=>$this->type
         ];
     }

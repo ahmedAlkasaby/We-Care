@@ -96,6 +96,10 @@
             <div class="card-datatable table-responsive">
               @include('admin.donation.includes.table',['donation'=>$donations])
             </div>
+            @foreach ($donations as $donation)
+            @include('admin.donation.includes.transfer',["donation"=>$donation])
+            @endforeach
+
             @include('admin.donation.create')
 
                   </div>

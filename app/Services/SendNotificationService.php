@@ -27,7 +27,6 @@ class SendNotificationService
     {
         $case = CharityCase::find($case_id);
 
-        // تحديد المستخدمين بناءً على الأولوية
         if ($case->priority == 'high') {
             $users = User::with('devices')->get();
         } else {
@@ -35,20 +34,16 @@ class SendNotificationService
         }
 
         if (!$users->isEmpty()) {
-            // إرسال إشعار قاعدة البيانات
             Notification::send($users, new DatabaseNotification($massege_ar, $massege_en, url('api/cases/show', $case_id), $case_id));
 
-            // إرسال إشعار Firebase
             foreach ($users as $user) {
                 if ($user->devices->count() > 0) {
                     foreach ($user->devices as $device) {
                         try {
-                            // التحقق من وجود الخدمة
                             if (!$this->FirebaseNotificationService) {
                                 throw new \Exception('FirebaseNotificationService not available');
                             }
 
-                            // محاولة إرسال الإشعار
                             $this->FirebaseNotificationService->sendNotification(
                                 $device->token,
                                 'We Care',
@@ -56,7 +51,6 @@ class SendNotificationService
                                 ['case_id' => $case_id]
                             );
                         } catch (\Exception $e) {
-                            // تخطي التوكن غير الصالح وتسجيل الخطأ
                             Log::error("Failed to send notification to token: {$device->token}. Error: {$e->getMessage()}");
                             continue;
                         }

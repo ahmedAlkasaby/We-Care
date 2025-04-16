@@ -1,5 +1,5 @@
-<div class="modal fade case-transfer-modal" id="caseTransfer_{{ $case->id }}" tabindex="-1" aria-labelledby="caseTransferLabel"
-    aria-hidden="true">
+<div class="modal fade case-transfer-modal" id="caseTransfer_{{ $case->id }}" tabindex="-1"
+    aria-labelledby="caseTransferLabel" aria-hidden="true">
     <form action="{{ route('transfers.store') }}" method="post">
         @csrf
         <input type="hidden" name="case_id" value="{{ $case->id }}">
@@ -36,7 +36,7 @@
                                     <td class="in-stock">{{ $item->amount }}</td>
                                     <td>
                                         <input class="form-control item-amount" type="number" step="1"
-                                        name="items[{{ $item->id }}][amount]" value="0">
+                                            name="items[{{ $item->id }}][amount]" value="0">
 
                                     </td>
                                 </tr>
@@ -56,7 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td class="case_need_price">{{ $case->get_price() - $case->get_price_raised() }}</td>
+                                <td class="case_need_price">{{ $case->price - $case->price_raised }}</td>
                                 <td class="storage-price">{{ $storage->price }}</td>
                                 <td>
                                     <input class="form-control price-input" type="number" step="0.01" name="price"

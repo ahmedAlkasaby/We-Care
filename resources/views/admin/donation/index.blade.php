@@ -29,7 +29,7 @@
                 <div class="card-datatable table-responsive">
                     @include('admin.donation.includes.search')
                     @include('admin.donation.includes.filter')
-                    @include('admin.donation.includes.table',['donation'=>$donations])
+                    @include('admin.donation.includes.table',["donations"=>$donations])
                     <div class="m-3">
                         {{ $donations->links() }}
                     </div>

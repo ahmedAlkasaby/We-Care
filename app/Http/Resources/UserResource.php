@@ -20,8 +20,8 @@ class UserResource extends JsonResource
             'phone'=>$this->phone,
             'email'=>$this->email,
             'gender'=>$this->gender,
-            'city'=>new CityRecource($this->city),
-            'region'=>new RegionResource($this->region),
+            'city'=>new CityRecource($this->whenLoaded('city')),
+            'region'=>new RegionResource($this->whenLoaded('region')),
             'image'=>url('uploads/'.$this->image)
         ];
     }

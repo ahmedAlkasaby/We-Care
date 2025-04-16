@@ -33,7 +33,7 @@
 @endsection
 @section('js')
 <script src={{ url("js/flashMessage.js")}}></script>
-<script src="{{ url("js/active/activeAjaxInSlider.js")}}"></script>
+{{-- <script src="{{ url("js/active/activeAjaxInSlider.js")}}"></script> --}}
 @endsection
 
 

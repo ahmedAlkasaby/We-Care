@@ -31,7 +31,7 @@ class DonationSeeder extends Seeder
             ]);
             $doner=User::find($donation->doner_id);
             $doner->update([
-                'amount'=>$doner->amount + $donation->get_price()
+                'amount'=>$doner->amount + $donation->price
             ]);
             $donation->images()->create([
                 'image'=>'donation_images\donation_from_charity.png'
@@ -52,7 +52,7 @@ class DonationSeeder extends Seeder
 
         //     $doner=User::find($donation->doner_id);
         //     $doner->update([
-        //         'amount'=>$doner->amount + $donation->get_price()
+        //         'amount'=>$doner->amount + $donation->price
         //     ]);
 
         // }

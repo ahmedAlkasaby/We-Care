@@ -9,7 +9,6 @@ class FirebaseNotificationService
 {
     protected $messaging;
 
-    // تعديل البناء ليقبل projectId
     public function __construct(string $projectId)
     {
         $service_account_path = storage_path('woudian-project-firebase-adminsdk-44c8h-3d70edd94d.json');

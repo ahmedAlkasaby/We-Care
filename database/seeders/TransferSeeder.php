@@ -18,7 +18,7 @@ class TransferSeeder extends Seeder
     {
         // for ($i=0; $i < 500; $i++) {
         //     $case= CharityCase::inRandomOrder()->first();
-        //     if($case->get_price_raised() < $case->get_price()){
+        //     if($case->price_raised < $case->price){
 
         //         $transfer=Transfer::create([
         //             'case_id'=>$case->id
@@ -40,7 +40,7 @@ class TransferSeeder extends Seeder
         //                             'price'=>$total_price
         //                         ]);
         //                         $case->update([
-        //                             'price_raised'=>$case->get_price_raised() + $total_price
+        //                             'price_raised'=>$case->price_raised + $total_price
         //                         ]);
 
         //                     }
@@ -50,12 +50,12 @@ class TransferSeeder extends Seeder
         //             }
 
         //         }else{
-        //             $rand_price=rand(0,$case->get_price()-$case->get_price_raised());
+        //             $rand_price=rand(0,$case->price-$case->price_raised);
         //             $transfer->update([
         //                 'price'=>$rand_price
         //             ]);
         //             $case->update([
-        //                 'price_raised'=>$case->get_price_raised() + $rand_price
+        //                 'price_raised'=>$case->price_raised + $rand_price
         //             ]);
 
         //         }

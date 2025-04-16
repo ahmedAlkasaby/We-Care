@@ -22,7 +22,7 @@
                 <td>{{ $loop->iteration }}</td>
 
                 <td>{{ $transfer->case->user->name }}</td>
-                <td>{{ $transfer->get_price() }}</td>
+                <td>{{ $transfer->price }}</td>
                 <td>
                     @if($transfer->type=='items')
                     <a href="#" class="badge bg-label-success me-1 item-badge" data-bs-toggle="modal"

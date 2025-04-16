@@ -51,7 +51,7 @@ trait CaseTrait
             $auth=Auth::guard('api')->user();
             $user=User::find($auth->id);
             $checkDonation = Donation::where('case_id',$case_id)->where('doner_id',$user->id)->get()->sum(function($donation){
-                return $donation->get_price();
+                return $donation->price;
             });
             if ($checkDonation) {
                 return $checkDonation;
@@ -193,7 +193,7 @@ trait CaseTrait
         $case=CharityCase::find($case_id);
         $donationsConfirm=Donation::where('case_id',$case_id)->where('confirm',1)->get();
         $total_price=$donationsConfirm->sum(function($donation){
-           return $donation->get_price();
+           return $donation->price;
         });
         return $total_price;
     }
@@ -202,7 +202,7 @@ trait CaseTrait
         $case=CharityCase::find($case_id);
         $donationsPendding=Donation::where('case_id',$case_id)->where('confirm',0)->get();
         $total_price=$donationsPendding->sum(function($donation){
-            return $donation->get_price();
+            return $donation->price;
         });
         return $total_price;
     }
@@ -213,10 +213,10 @@ trait CaseTrait
 
 
         $price_waiting=Donation::where('case_id',$case_id)->where('confirm',0)->get()->sum(function($donation){
-            return $donation->get_price();
+            return $donation->price;
         });
-        $price=$case->get_price();
-        $price_raised=$case->get_price_raised();
+        $price=$case->price;
+        $price_raised=$case->price_raised;
         $price_need=$price-$price_raised;
 
         $price_expect=$price_waiting+$price_raised;

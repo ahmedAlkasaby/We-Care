@@ -39,20 +39,10 @@ Route::group(['prefix'=>'auth'],function(){
     Route::post('forget/password',[ForgetPasswordController::class,'ForgetPassword']);
     Route::post('rest/password',[RestPasswordController::class,'RestPassword']);
 });
-Route::post('dashboard/users/import', function(){
-    dd('lds');
-});
 
 
-Route::post('import', function (Request $request) {
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv', // تحقق من نوع الملف
-    ]);
-
-
-    Excel::import(new CaseImport, $request->file('file'));
-
-    return response()->json(['message' => 'تم استيراد البيانات بنجاح!'], 200);
+Route::get('/',function(Request $request){
+    var_dump( $request->header());
 });
 
 

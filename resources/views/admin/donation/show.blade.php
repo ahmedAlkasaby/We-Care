@@ -65,21 +65,26 @@
 
                 @if ($donation->confirm == 0)
                 <div class="mb-3">
-                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" style="max-width: 400px; margin: 0 auto;">
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel"
+                        style="max-width: 400px; margin: 0 auto;">
                         <style>
                             .carousel-image-wrapper {
                                 width: 100%;
-                                height: 300px; /* يمكنك تغيير الارتفاع حسب احتياجك */
+                                height: 300px;
+                                /* يمكنك تغيير الارتفاع حسب احتياجك */
                                 overflow: hidden;
-                                border-radius: 10px; /* اختياري لإضافة حواف مستديرة */
+                                border-radius: 10px;
+                                /* اختياري لإضافة حواف مستديرة */
                                 position: relative;
                             }
 
                             .carousel-image-wrapper img {
                                 width: 100%;
                                 height: 100%;
-                                object-fit: cover; /* يجعل الصورة تملأ المساحة دون تشويه */
-                                cursor: pointer; /* يجعل الصورة قابلة للضغط */
+                                object-fit: cover;
+                                /* يجعل الصورة تملأ المساحة دون تشويه */
+                                cursor: pointer;
+                                /* يجعل الصورة قابلة للضغط */
                             }
 
                             .carousel-control-prev,
@@ -93,11 +98,13 @@
                             }
 
                             .carousel-control-prev {
-                                left: -50px; /* نقل الزر خارج الصورة */
+                                left: -50px;
+                                /* نقل الزر خارج الصورة */
                             }
 
                             .carousel-control-next {
-                                right: -50px; /* نقل الزر خارج الصورة */
+                                right: -50px;
+                                /* نقل الزر خارج الصورة */
                             }
                         </style>
 
@@ -105,30 +112,36 @@
                             @foreach ($donation->images as $image)
                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                 <div class="carousel-image-wrapper">
-                                    <img src="{{ asset('uploads/' . $image->image) }}" alt="Image {{ $loop->index }}" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="openModal('{{ asset('uploads/' . $image->image) }}')">
+                                    <img src="{{ asset('uploads/' . $image->image) }}" alt="Image {{ $loop->index }}"
+                                        data-bs-toggle="modal" data-bs-target="#imageModal"
+                                        onclick="openModal('{{ asset('uploads/' . $image->image) }}')">
                                 </div>
                             </div>
                             @endforeach
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">@lang('site.previous')</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">@lang('site.next')</span>
                         </button>
                     </div>
 
                     <!-- Modal to display full-size image -->
-                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
                                 <div class="modal-body">
                                     <img id="modalImage" src="" class="img-fluid" alt="Full Image">
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('site.close')</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">@lang('site.close')</button>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +234,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <h6>@lang("site.total"): ${{ $donation->get_price() }}</h6>
+                        <h6>@lang("site.total"): ${{ $donation->price }}</h6>
                     </div>
                 </div>
                 @else
@@ -229,7 +242,7 @@
                     <div class="text-center p-3 rounded bg-light border border-primary shadow-sm"
                         style="max-width: 250px;">
                         <h5 class="fw-bold text-primary mb-2">@lang('site.donation_amount')</h5>
-                        <p class="mb-0 display-6 fw-bold text-primary">${{ number_format($donation->get_price(), 2) }}
+                        <p class="mb-0 display-6 fw-bold text-primary">${{ number_format($donation->price, 2) }}
                         </p>
                     </div>
                 </div>

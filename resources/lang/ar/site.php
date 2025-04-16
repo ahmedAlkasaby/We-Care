@@ -835,6 +835,13 @@ return array (
     'store'   => 'إضافة',
     'update'  => 'تعديل',
     'destroy' => 'حذف',
+    'not_found'=>'لا يوجد',
+    'select_all'=>'تحديد الكل',
+    'created' => 'إضافة',
+    'updated' => 'تحديث',
+    'deleted' => 'حذف',
+
+    'activity_log' => "تم :action في :model بواسطة :user"
 
 
 

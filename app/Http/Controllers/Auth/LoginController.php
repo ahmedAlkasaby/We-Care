@@ -57,17 +57,17 @@ class LoginController extends Controller
            'phone' => 'required|string|exists:users,phone',
            'password' => 'required|min:8'
        ]);
-   
+
        $user = User::where('phone', $request->phone)->first();
-   
+
        if ($user && $user->is_admin == 1) {
            if (Auth::attempt(['phone' => $request->phone, 'password' => $request->password])) {
-               return redirect()->route('admin'); 
+               return redirect()->intended(route('admin'));
            } else {
-               return redirect()->back()->with('error', 'البيانات المدخلة غير صحيحة.'); 
+               return redirect()->back()->with('error', 'البيانات المدخلة غير صحيحة.');
            }
        } else {
-           return redirect()->back()->with('error', 'ليس لديك صلاحية بالدخول على هذه الصفحة.'); 
+           return redirect()->back()->with('error', 'ليس لديك صلاحية بالدخول على هذه الصفحة.');
        }
    }
 

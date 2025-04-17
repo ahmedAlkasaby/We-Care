@@ -382,6 +382,11 @@ return [
     'region_id_exists' => 'المنطقة غير موجودة',
     'amount_numeric' => 'الكمية يجب ان تكون رقم',
     'amount_min' => 'الكمية يجب ان تكون اكبر من صفر',
+    'token_required' => 'التوكن مطلوب',
+    'token_string' => 'التوكن يجب ان يكون نص',
+    'device_type_required' => 'نوع الجهاز مطلوب',
+    'device_type_in' => 'نوع الجهاز يجب ان يكون من القيم التالية: android, ios, web',
+    'imei_required' => 'رقم IMEI مطلوب',
 
 
 

@@ -3,8 +3,9 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\ForgetPasswordController;
 
-use App\Http\Controllers\Api\Auth\RestPasswordController;
+use App\Http\Controllers\Api\Auth\GoogleController;
 
+use App\Http\Controllers\Api\Auth\RestPasswordController;
 use App\Http\Controllers\Api\Auth\VerfiedController;
 use App\Http\Controllers\Api\CaseController;
 use App\Http\Controllers\Api\CategoryCaseController;
@@ -29,6 +30,7 @@ use PHPUnit\Event\Code\Test;
 
 
 
+
 Route::group(['prefix'=>'auth'],function(){
     Route::post('register/check',[AuthController::class, 'check_register']);
     Route::post('register',[AuthController::class,'register']);
@@ -39,6 +41,10 @@ Route::group(['prefix'=>'auth'],function(){
     Route::post('forget/password',[ForgetPasswordController::class,'ForgetPassword']);
     Route::post('rest/password',[RestPasswordController::class,'RestPassword']);
 });
+
+Route::get('login/google/redirect', [GoogleController::class, 'redirect']);
+Route::get('login/google/callback', [GoogleController::class, 'callback']);
+
 
 
 Route::get('/',function(Request $request){

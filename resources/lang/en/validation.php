@@ -358,6 +358,12 @@ return [
     'images_max' => 'The image may not be greater than 2MB.',
     'you_cant_enter_both_price_and_items'=>'You can\'t enter both price and items.',
 
+    'token_required' => 'The token is required.',
+    'token_string' => 'The token must be a string.',
+    'device_type_required' =>'the device type is required',
+    'device_type_in' => 'The device type must be one of the following: android, huawei, apple.',
+    'imei_required' => 'The IMEI is required.',
+
 
 
 
